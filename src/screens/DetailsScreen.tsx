@@ -8,7 +8,7 @@ const DetailsScreen = ({ route }: { route: any }) => {
   return (
     
     <ScrollView style={{padding:20}}>
-      <View  style={{padding:10,backgroundColor:'#c3c6c9',borderRadius:10,shadowColor:'black',shadowRadius:10}}>
+      <View   style={{padding:20,backgroundColor:'#dedfe2',borderRadius:10,shadowColor:'black',shadowRadius:10}}>
         {/* Aquí se mostrará la información del personaje */}
         <Image source={{uri: character.image}} style={{width: '100%', height: 300}} />
 
@@ -30,6 +30,7 @@ const styles= StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
+    color:"#8a4d1b"
   },
   details: {
     fontSize:  18,

@@ -4,6 +4,7 @@ import HomeScreen from '../screens/HomeScreen'; // Pantalla principal
 import DetailsScreen from '../screens/DetailsScreen'; // Pantalla de detalles
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
+import LoginScreen from '../screens/LoginScreen';
 
 // Crea una instancia del navegador tipo Drawer
 const Drawer = createDrawerNavigator();
@@ -12,7 +13,7 @@ const DrawerNavigation = () => {
   return (
     <NavigationContainer>
       <Drawer.Navigator
-        initialRouteName="Home"
+        initialRouteName="Login"
         screenOptions={({ route }) => ({
           drawerStyle: {
             backgroundColor: '#ffffff',
@@ -31,6 +32,15 @@ const DrawerNavigation = () => {
          
         })}
       >
+
+<Drawer.Screen name="Login" component={LoginScreen} 
+options={{
+    title: 'Iniciar Sesión' ,
+    // headerTitleStyle: { color: 'white' },
+    // headerStyle: { backgroundColor: '#3498db' },
+    // headerTintColor: 'white'  // or 'rgba(255, 255, 255, 0.8)' for semi-transparent
+}}/>
+
       {/* Define la navegación con el Drawer y establece la pantalla inicial como "Inicio" */}
       
       <Drawer.Screen  name="Home"  component={HomeScreen} /> 
