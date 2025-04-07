@@ -1,27 +1,27 @@
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { Character } from '../types/character';
+import { Meal } from '../types/meal';
 
-const CharacterCard = ({ character, navigation }: { character?: Character, navigation?: any }) => {
+const CharacterMealCard = ({ meal, navigation }: { meal?: Meal, navigation?: any }) => {
   
   const handlePress = () => {
-    navigation.navigate('Details', { character }); 
+    navigation.navigate('Details', { meal }); 
   };
 
   return (
     <TouchableOpacity onPress={handlePress} > 
       <View style={styles.card}> 
         
-        <Image source={{ uri: character?.image }} style={styles.image} />
+        <Image source={{ uri: meal?.strCategoryThumb }} style={styles.image} />
 
-        <Text style={styles.name}>{character?.title}</Text>
+        <Text style={styles.name}>{meal?.strCategory}</Text>
 
       </View>
     </TouchableOpacity>
   );
 };
 
-export default CharacterCard;
+export default CharacterMealCard;
 
 const styles = StyleSheet.create({
   card: {

@@ -1,39 +1,45 @@
-import React, { useEffect, useState } from 'react'; // Importa React y hooks para gestionar estado y efectos
-import { ScrollView, Text } from 'react-native'; // Importa componentes de React Native
-import { useNavigation } from '@react-navigation/native'; // Hook para la navegación
-import { Character } from '../types/character'; // Importa el tipo de datos Character
-import global from '../styles/global'; // Importa estilos globales
-import api from '../api/api'; // Importa la instancia de la API
-import CharacterCard from '../components/CharacterCard';
+import React from 'react'
+import { Text, View ,Image, StyleSheet} from 'react-native'
 
- // Importa el componente de tarjeta de personaje
+const HomeScreen = ({ route }: any) => {
+  const  {name}  = route.params || {};
 
-
- export default function HomeScreen() {
-  const [characters, setCharacters] = useState<Character[]>([]); // Estado para almacenar los personajes
-  const navigation = useNavigation(); // Obtiene el objeto de navegación
-
-    useEffect(()=>{
-        const fetchCharacter =async () =>{
-          const response = await api.get('/products');
-          setCharacters(response.data);
-          
-        };
-        fetchCharacter(); 
-    },[])
+  if (!name) {
+    return <Text>No hay nombre en la ruta</Text>
+  }
   return (
-    <ScrollView style={global.container}>
-      {/* Contenedor desplazable que usa los estilos globales */}
-
-      <Text style={global.tittle}>Store</Text>
-      {/* Título principal de la pantalla */}
-
-      {characters.map((c) => (
-        <CharacterCard key={c.id} character={c}  navigation={navigation}  />
-        // Renderiza una tarjeta por cada personaje obtenido de la API
-      ))}
-    </ScrollView>
+    <View style={styles.container} >
+      <Text style={styles.title} >Welcome, {name} </Text>
+      <Image source={{uri:"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/c9/58/b8/fabuloso-restaurante.jpg"}} style={styles.image}></Image>
+    </View>
   )
 }
 
+const styles= StyleSheet.create({
 
+  title:{
+    fontSize: 50,
+    backgroundColor: "rgba(225, 225, 225, 0.5)",
+    fontWeight: 'bold',
+    marginBottom: 20,
+    position: 'absolute',
+    width: '90%',
+    color:"white",
+    zIndex: 1,
+    padding:25,
+    borderRadius: 5,
+
+    
+  },
+  container: {
+
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  }
+})
+export default HomeScreen

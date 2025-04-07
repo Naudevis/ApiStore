@@ -1,5 +1,5 @@
 import React from 'react'
-import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Alert, Button, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 
 const LoginScreen = ({ navigation }: any) => {
     //Estado para el usuario y contraseña
@@ -10,34 +10,40 @@ const LoginScreen = ({ navigation }: any) => {
         // Validar los campos vacios
 
         if (!username || !password) {
-            Alert.alert('Error: ', 'Todos los campos son obligatorios');
+            Alert.alert('Error: ', 'All spaces are required');
             return
         }
         // Validar la authenticación
         if (username === 'admin' && password === '1234') {
-            navigation.navigate('Home',{user:username})
+            navigation.navigate('nav',{user:username})
         } else {
-            Alert.alert('Error :','Credenciales incorrectas')
+            Alert.alert('Error :','Incorrect credentials')
         }
     }
     return (
         
         <View style={styles.container}>
-            <Text style={styles.title}>Iniciar Sesion</Text>
+            <View style={styles.card}>
+
+            <Text style={styles.title}>Sing in</Text>
+            <Image source={{uri:"https://www.pngall.com/wp-content/uploads/15/User.png"}} style={styles.img}></Image>
             <TextInput
                 style={styles.input}
-                placeholder="Usuario"
+                placeholder="Username"
                 value={username}
                 onChangeText={setUsuario}
             />
             <TextInput
                 style={styles.input}
                 secureTextEntry
-                placeholder="Contraseña"
+                placeholder="Password"
                 value={password}
                 onChangeText={setPassword}
             />
-            <Button title="Ingresar" onPress={manejarLogin} />
+   <TouchableOpacity onPress={manejarLogin} style={styles.button}>
+  <Text style={{color:"white"}}>Sing in</Text>
+</TouchableOpacity>
+            </View>
         </View>
     )
 }
@@ -46,7 +52,16 @@ const styles= StyleSheet.create({
         padding:20,
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor:"gray"
+    },
+    card:{
+        width: '90%',
+        padding: 20,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        marginBottom: 20,
+        alignItems: 'center',
     },
     title:{
         fontSize:24,
@@ -59,14 +74,22 @@ const styles= StyleSheet.create({
         padding: 10,
         borderWidth: 1,
         borderColor: '#ccc',
-        width: '50%'
+        width: '80%',
+        borderRadius:5,
     },
     button: {
-        marginTop: 20,
-        padding: 10,
+        marginTop: 2,
+        padding: 15,
         backgroundColor: '#333',
         color: '#fff',
-        borderRadius: 5
+        borderRadius: 10,
+        width: '80%',
+        alignItems: 'center',
+    },
+    img:{
+        width: 130,
+        height: 130,
+        marginBottom: 20
     }
  
 })

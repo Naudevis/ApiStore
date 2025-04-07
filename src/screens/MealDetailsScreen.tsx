@@ -2,13 +2,13 @@ import React from 'react'
 import { Button, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
 
 
-const DetailsScreen = ({ route }: { route?: any }) => {
-  const { character } = route.params || {}; // Recibir el personaje desde los parámetros
-   if (!character){
+const MealDetailsScreen = ({ route }: { route?: any }) => {
+  const { meal } = route.params || {}; // Recibir el personaje desde los parámetros
+   if (!meal){
 
      return (
        <View style={styles.secondContainer}>
-         <Text style={styles.secondTitle}>You must select an article</Text>
+         <Text style={styles.secondTitle}>You must select a meal</Text>
        </View>
      )  // Si no hay personaje, mostrar mensaje de carga
    } 
@@ -17,11 +17,11 @@ const DetailsScreen = ({ route }: { route?: any }) => {
       
       <View   style={{padding:20,backgroundColor:'#dedfe2',borderRadius:10,shadowColor:'black',shadowRadius:10}}>
         {/* Aquí se mostrará la información del personaje */}
-        <Image source={{uri: character?.image }} style={{width: '100%', height: 300}} />
+        <Image source={{uri: meal?.strCategoryThumb }} style={{width: "auto", height: 170}} />
 
-        <Text style={styles.title}>{character?.title}</Text>
-        <Text style={styles.details}>Price: ${character?.price}</Text>
-        <Text style={styles.details}>Description: {character?.description}</Text>
+        <Text style={styles.title}>{meal?.strCategory}</Text>
+        <Text style={styles.details}>Description: {meal?.strCategoryDescription}</Text>
+
       </View>
     </ScrollView>
   )
@@ -59,4 +59,4 @@ const styles= StyleSheet.create({
   
 });
 
-export default DetailsScreen
+export default MealDetailsScreen
