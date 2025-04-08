@@ -1,24 +1,40 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import React from 'react'
 import { Alert, Button, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 
 const LoginScreen = ({ navigation }: any) => {
     //Estado para el usuario y contraseña
-    const [username, setUsuario] = React.useState('')
+    const [correo, setCorreo] = React.useState('')
     const [password, setPassword] = React.useState('')
     // Función para validar y redirigir
-    const manejarLogin = () => {
-        // Validar los campos vacios
-
-        if (!username || !password) {
-            Alert.alert('Error: ', 'All spaces are required');
-            return
-        }
-        // Validar la authenticación
-        if (username === 'admin' && password === '1234') {
-            navigation.navigate('nav',{user:username})
-        } else {
-            Alert.alert('Error :','Incorrect credentials')
-        }
+    
+    const manejarLogin =async () => {
+               //Validar campos vacios
+               if(!correo||!password){
+                Alert.alert('Error', 'All spaces are required')
+                return;
+            }
+    
+            try{
+                //Obtener el usuario guardado en AsyncStorage
+                const userData = await AsyncStorage.getItem('users');
+                const users= userData? JSON.parse(userData): []; //Parsear el usuario guardado
+    
+                const user= users.find((u: any) => u.email === correo
+                && u.password === password ); //Buscar el usuario por correo
+    
+                if(user){
+                    await AsyncStorage.setItem('user', JSON.stringify(user)); //Guardar el usuario en AsyncStorage
+                    navigation.navigate('nav', {user:user.name}); //Navegar a la pantalla de inicio
+                }else{
+                    Alert.alert('Error', 'Incorrect credentials'); //Mostrar error si no se encuentra el usuario
+                    
+                }
+    
+            }catch(error){
+                Alert.alert('Error', "The user could not be validated"); //Mostrar error si no se puede validar el usuario
+                
+            }
     }
     return (
         
@@ -29,9 +45,9 @@ const LoginScreen = ({ navigation }: any) => {
             <Image source={{uri:"https://www.pngall.com/wp-content/uploads/15/User.png"}} style={styles.img}></Image>
             <TextInput
                 style={styles.input}
-                placeholder="Username"
-                value={username}
-                onChangeText={setUsuario}
+                placeholder="Email"
+                value={correo}
+                onChangeText={setCorreo}
             />
             <TextInput
                 style={styles.input}
@@ -43,6 +59,10 @@ const LoginScreen = ({ navigation }: any) => {
    <TouchableOpacity onPress={manejarLogin} style={styles.button}>
   <Text style={{color:"white"}}>Sing in</Text>
 </TouchableOpacity>
+
+<TouchableOpacity onPress={()=> navigation.navigate('Register')}>
+                <Text style={styles.registerText}>Don't you have an account? Register</Text>
+            </TouchableOpacity>
             </View>
         </View>
     )
@@ -90,8 +110,13 @@ const styles= StyleSheet.create({
         width: 130,
         height: 130,
         marginBottom: 20
-    }
- 
+    },
+    registerText:{
+        marginTop: 20,
+        textAlign:'center',
+        color:'#0066cc',
+        textDecorationLine:'underline'
+    },
 })
 
 export default LoginScreen

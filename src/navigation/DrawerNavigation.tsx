@@ -9,11 +9,17 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ArticlesScreen from '../screens/ArticlesScreen';
 import MealSreen from '../screens/MealScreen';
+import RegisterScreen from '../screens/RegisterScreen';
+import SplashScreen from '../screens/SplashScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert, Button } from 'react-native';
 
 // Crea una instancia del navegador tipo Drawer
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();// 👉 DrawerNavigator recibe props
+
 const DrawerNavigator = ({ route }:{route:any}) => {
+  const DummyScreen = () => null;
   const  {user}  = route.params || {}; // ✅ Asegura que no sea undefined al principio
 
   return (
@@ -38,25 +44,53 @@ const DrawerNavigator = ({ route }:{route:any}) => {
       }}
     >
       {/* 👇 Pasamos `user` como prop al Home */}
-      <Drawer.Screen name="Home" component={HomeScreen} initialParams={{ name: user }}/>
+      <Drawer.Screen name="Home"  component={HomeScreen} initialParams={{ name: user }}/>
       
       {/* <Drawer.Screen name="Articles" component={ArticlesScreen} /> */}
       <Drawer.Screen name="Meal" component={MealSreen} />
       <Drawer.Screen name={"Details"} component={DetailsScreen} />
+      {/* <Drawer.Screen name={"Exit"} component={}  /> */}
+      <Drawer.Screen
+  name="Log out"
+  component={DummyScreen}
+  options={{
+    drawerLabel: 'Log out',
+    // drawerIcon: ({ color, size }) => (
+    //   <Button title='Cerrar'></Button>
+    // ),
+    headerShown: false,
+  }}
+        listeners={({ navigation }: any) => ({
+          focus: async () => {
+            try {
+              await AsyncStorage.removeItem('user');
+              Alert.alert('Success', 'Closed Session')
+              navigation.replace('Login');
+            } catch (error) {
+              Alert.alert('Error', 'Logout error')
+            }
+          },
+        })}
+/>
     </Drawer.Navigator>
   );
 };
 
 const DrawerNavigation = () => {
   return (
-    <NavigationContainer>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <Stack.Navigator initialRouteName="Login">
+   
+      <GestureHandlerRootView style={{ flex: 1 }} >
+      <Stack.Navigator initialRouteName= "Splash"  >
           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+          <Stack.Screen name='Register' component={RegisterScreen}
+        options={{title:'Register', headerStyle: {
+          backgroundColor: '#000000',
+        },headerTintColor:"white"}} />
+                <Stack.Screen name='Splash' component={SplashScreen} options={{ headerShown: false }}/> 
+
           <Stack.Screen name="nav" component={DrawerNavigator} options={{ headerShown: false }} />
         </Stack.Navigator>
       </GestureHandlerRootView>
-    </NavigationContainer>
   );
 };
 
